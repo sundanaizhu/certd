@@ -17,6 +17,7 @@ export abstract class CertApplyBasePlugin extends AbstractTaskPlugin {
       vModel: "value",
       mode: "tags",
       open: false,
+      placeholder: "foo.com / *.foo.com / *.bar.com",
       tokenSeparators: [",", " ", "，", "、", "|"],
     },
     rules: [{ type: "domains" }],
@@ -26,9 +27,9 @@ export abstract class CertApplyBasePlugin extends AbstractTaskPlugin {
     },
     order: -999,
     helper:
-      "1、支持通配符域名，例如： *.foo.com、foo.com、*.test.handsfree.work\n" +
-      "2、支持多个域名、多个子域名、多个通配符域名打到一个证书上（域名必须是在同一个DNS提供商解析）\n" +
-      "3、多级子域名要分成多个域名输入（*.foo.com的证书不能用于xxx.yyy.foo.com、foo.com）\n" +
+      "1、支持多个域名打到一个证书上，例如： foo.com，*.foo.com，*.bar.com\n" +
+      "2、子域名被通配符包含的不要填写，例如：www.foo.com已经被*.foo.com包含，不要填写www.foo.com\n" +
+      "3、泛域名只能通配*号那一级（*.foo.com的证书不能用于xxx.yyy.foo.com、不能用于foo.com）\n" +
       "4、输入一个，空格之后，再输入下一个",
   })
   domains!: string[];
@@ -262,11 +263,12 @@ cert.jks：jks格式证书文件，java服务器使用
       this.logger.info("输入参数变更，准备申请新证书");
       return null;
     } else {
-      this.logger.info("输入参数未变更，不需要更新证书");
+      this.logger.info("输入参数未变更，检查证书是否过期");
     }
 
     let oldCert: CertReader | undefined = undefined;
     try {
+      this.logger.info("读取上次证书");
       oldCert = await this.readLastCert();
     } catch (e) {
       this.logger.warn("读取cert失败：", e);
@@ -304,6 +306,7 @@ cert.jks：jks格式证书文件，java服务器使用
   async readLastCert(): Promise<CertReader | undefined> {
     const cert = this.lastStatus?.status?.output?.cert;
     if (cert == null) {
+      this.logger.info("没有找到上次的证书");
       return undefined;
     }
     return new CertReader(cert);
@@ -321,7 +324,7 @@ cert.jks：jks格式证书文件，java服务器使用
     // 检查有效期
     const leftDays = dayjs(expires).diff(dayjs(), "day");
     return {
-      isWillExpire: leftDays < maxDays,
+      isWillExpire: leftDays <= maxDays,
       leftDays,
     };
   }

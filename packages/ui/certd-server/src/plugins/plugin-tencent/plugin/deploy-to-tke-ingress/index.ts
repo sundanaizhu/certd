@@ -6,11 +6,11 @@ import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
 
 @IsTaskPlugin({
   name: 'DeployCertToTencentTKEIngress',
-  title: '部署到腾讯云TKE-ingress',
+  title: '腾讯云-部署到TKE-ingress',
   needPlus: true,
   icon: 'svg:icon-tencentcloud',
   group: pluginGroups.tencent.key,
-  desc: 'Qcloud类型需要【上传到腾讯云】作为前置任务；ApiServer未开启外网访问则需要做域名的内网IP映射',
+  desc: 'serverless集群请使用K8S部署插件；Qcloud类型需要【上传到腾讯云】作为前置任务；ApiServer未开启外网访问则需要做域名的内网IP映射',
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,

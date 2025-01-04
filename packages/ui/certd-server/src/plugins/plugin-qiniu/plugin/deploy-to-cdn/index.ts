@@ -1,12 +1,11 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
+import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine, QiniuAccess, QiniuClient } from '@certd/plugin-lib';
 import { CertInfo } from '@certd/plugin-cert';
 import { optionsUtils } from '@certd/basic/dist/utils/util.options.js';
-import { QiniuAccess, QiniuClient } from '@certd/plugin-plus';
 
 @IsTaskPlugin({
   name: 'QiniuDeployCertToCDN',
-  title: '部署证书至七牛云CDN',
+  title: '七牛云-部署证书至CDN',
   icon: 'svg:icon-qiniuyun',
   group: pluginGroups.qiniu.key,
   desc: '自动部署域名证书至七牛云CDN',

@@ -1,10 +1,9 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { TencentAccess } from '@certd/plugin-plus';
 import dayjs from 'dayjs';
-
+import { TencentAccess } from '@certd/plugin-lib';
 @IsTaskPlugin({
   name: 'DeployCertToTencentCLB',
-  title: '部署到腾讯云CLB',
+  title: '腾讯云-部署到CLB',
   icon: 'svg:icon-tencentcloud',
   group: pluginGroups.tencent.key,
   desc: '暂时只支持单向认证证书，暂时只支持通用负载均衡，必须开启sni',
