@@ -70,6 +70,9 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         width: 320,
         fixed: "right",
         buttons: {
+          view: {
+            show: false
+          },
           copy: {
             show: false
           },
@@ -155,7 +158,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             component: {
               name: DurationValue,
               vModel: "modelValue"
-            }
+            },
+            align: "center"
           }
         },
         amount: {
@@ -182,7 +186,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             ]
           }),
           column: {
-            width: 100
+            width: 100,
+            align: "center"
           }
         },
         payType: {
@@ -193,14 +198,16 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             data: [
               { label: "聚合支付", value: "yizhifu" },
               { label: "支付宝", value: "alipay" },
-              { label: "微信", value: "wxpay" }
+              { label: "微信", value: "wxpay" },
+              { label: "免费", value: "free" }
             ]
           }),
           column: {
             width: 100,
             component: {
               color: "auto"
-            }
+            },
+            align: "center"
           }
         },
         payTime: {

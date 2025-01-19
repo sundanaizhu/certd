@@ -1,8 +1,11 @@
 import { ILogger } from "@certd/basic";
 import { AliyunAccess } from "../access/index.js";
 import { AliyunClient } from "./index.js";
-import { CertInfo } from "@certd/plugin-cert";
 
+export type AliyunCertInfo = {
+  crt: string; //fullchain证书
+  key: string; //私钥
+};
 export type AliyunSslClientOpts = {
   access: AliyunAccess;
   logger: ILogger;
@@ -23,8 +26,10 @@ export type AliyunSslCreateDeploymentJobReq = {
 
 export type AliyunSslUploadCertReq = {
   name: string;
-  cert: CertInfo;
+  cert: AliyunCertInfo;
 };
+
+export type CasCertInfo = { certId: number; certName: string; certIdentifier: string };
 
 export class AliyunSslClient {
   opts: AliyunSslClientOpts;
@@ -33,7 +38,7 @@ export class AliyunSslClient {
   }
 
   checkRet(ret: any) {
-    if (ret.code != null) {
+    if (ret.Code != null) {
       throw new Error("执行失败：" + ret.Message);
     }
   }
@@ -48,6 +53,22 @@ export class AliyunSslClient {
       apiVersion: "2020-04-07",
     });
     return client;
+  }
+
+  async getCertInfo(certId: number): Promise<CasCertInfo> {
+    const client = await this.getClient();
+    const params = {
+      CertId: certId,
+    };
+
+    const res = await client.request("GetUserCertificateDetail", params);
+    this.checkRet(res);
+
+    return {
+      certId: certId,
+      certName: res.Name,
+      certIdentifier: res.CertIdentifier,
+    };
   }
 
   async uploadCert(req: AliyunSslUploadCertReq) {

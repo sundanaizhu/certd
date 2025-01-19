@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/certd/certd/compare/v1.29.5...v1.30.0) (2025-01-19)
+
+### Bug Fixes
+
+* 修复查看任务日志偶发性无法自动滚动底部的bug ([7e482f7](https://github.com/certd/certd/commit/7e482f798c0142bce1866f84676cb40210f9638a))
+
+### Performance Improvements
+
+* 支持部署到阿里云ALB ([653940a](https://github.com/certd/certd/commit/653940a0ca64fc380178c1b0b58ae0af64dfaf07))
+* 支持部署到阿里云NLB、SLB ([c085bac](https://github.com/certd/certd/commit/c085bac5d877c4250a8a79e17eb8673b8e4fc89c))
+
+## [1.29.5](https://github.com/certd/certd/compare/v1.29.4...v1.29.5) (2025-01-07)
+
+**Note:** Version bump only for package @certd/plugin-lib
+
+## [1.29.4](https://github.com/certd/certd/compare/v1.29.3...v1.29.4) (2025-01-06)
+
+**Note:** Version bump only for package @certd/plugin-lib
+
+## [1.29.3](https://github.com/certd/certd/compare/v1.29.2...v1.29.3) (2025-01-04)
+
+### Performance Improvements
+
+* 优化acme sdk ([54db744](https://github.com/certd/certd/commit/54db74428259de64d12230c2ab7353ae11197bbc))
+* 支持http校验方式申请证书 ([405591c](https://github.com/certd/certd/commit/405591c5d08fa1a3b228ee3980199e7731cfec4a))
+* http校验方式，支持七牛云oss、阿里云oss、腾讯云cos ([3f74d4d](https://github.com/certd/certd/commit/3f74d4d9e5f5d0e629b44cff1895b3f7a8fbcafc))
+
+## [1.29.2](https://github.com/certd/certd/compare/v1.29.1...v1.29.2) (2024-12-25)
+
+**Note:** Version bump only for package @certd/plugin-lib
+
+## [1.29.1](https://github.com/certd/certd/compare/v1.29.0...v1.29.1) (2024-12-25)
+
+**Note:** Version bump only for package @certd/plugin-lib
+
 # [1.29.0](https://github.com/certd/certd/compare/v1.28.4...v1.29.0) (2024-12-24)
 
 **Note:** Version bump only for package @certd/plugin-lib

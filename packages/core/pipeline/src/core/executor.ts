@@ -11,6 +11,7 @@ import { ICnameProxyService, IEmailService, IPluginConfigService, IUrlService } 
 import { FileStore } from "./file-store.js";
 import { cloneDeep, forEach, merge } from "lodash-es";
 import { INotificationService } from "../notification/index.js";
+import { taskEmitterCreate } from "../service/emit.js";
 
 export type SysInfo = {
   //系统标题
@@ -109,7 +110,13 @@ export class Executor {
     } finally {
       clearInterval(intervalFlushLogId);
       await this.onChanged(this.runtime);
-      await this.pipelineContext.setObj("lastRuntime", this.runtime);
+      //保存之前移除logs
+      const lastRuntime: any = {
+        ...this.runtime,
+      };
+      delete lastRuntime.logs;
+      delete lastRuntime._loggers;
+      await this.pipelineContext.setObj("lastRuntime", lastRuntime);
       this.logger.info(`pipeline.${this.pipeline.id}  end`);
     }
   }
@@ -336,6 +343,10 @@ export class Executor {
       signal: this.abort.signal,
       utils,
       user: this.options.user,
+      emitter: taskEmitterCreate({
+        step,
+        pipeline: this.pipeline,
+      }),
     };
     instance.setCtx(taskCtx);
 

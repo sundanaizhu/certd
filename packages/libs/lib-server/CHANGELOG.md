@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/certd/certd/compare/v1.29.5...v1.30.0) (2025-01-19)
+
+### Features
+
+* 支持open api接口，根据域名获取证书 ([52a4fd3](https://github.com/certd/certd/commit/52a4fd33180e9b3f71b8dc9f7671d7cd8e448c3b))
+
+## [1.29.5](https://github.com/certd/certd/compare/v1.29.4...v1.29.5) (2025-01-07)
+
+**Note:** Version bump only for package @certd/lib-server
+
+## [1.29.4](https://github.com/certd/certd/compare/v1.29.3...v1.29.4) (2025-01-06)
+
+**Note:** Version bump only for package @certd/lib-server
+
+## [1.29.3](https://github.com/certd/certd/compare/v1.29.2...v1.29.3) (2025-01-04)
+
+### Bug Fixes
+
+* 修复系统级授权无法查看密钥的bug ([8644348](https://github.com/certd/certd/commit/8644348fc41ae2e1672f946ca37e5d3a674e0218))
+
+## [1.29.2](https://github.com/certd/certd/compare/v1.29.1...v1.29.2) (2024-12-25)
+
+**Note:** Version bump only for package @certd/lib-server
+
+## [1.29.1](https://github.com/certd/certd/compare/v1.29.0...v1.29.1) (2024-12-25)
+
+**Note:** Version bump only for package @certd/lib-server
+
 # [1.29.0](https://github.com/certd/certd/compare/v1.28.4...v1.29.0) (2024-12-24)
 
 ### Features

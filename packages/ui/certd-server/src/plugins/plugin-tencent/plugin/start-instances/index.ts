@@ -1,11 +1,11 @@
 import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
 import { AbstractTaskPlugin } from '@certd/pipeline';
-import { TencentAccess } from '@certd/plugin-plus';
+import { TencentAccess } from '@certd/plugin-lib';
 import { createRemoteSelectInputDefine } from '@certd/plugin-lib';
 
 @IsTaskPlugin({
   name: 'TencentActionInstancesPlugin',
-  title: '腾讯云实例开关机',
+  title: '腾讯云-实例开关机',
   icon: 'svg:icon-tencentcloud',
   group: pluginGroups.tencent.key,
   desc: '腾讯云实例开关机',

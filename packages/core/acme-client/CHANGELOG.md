@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/publishlab/node-acme-client/compare/v1.29.5...v1.30.0) (2025-01-19)
+
+### Bug Fixes
+
+* 修复查看任务日志偶发性无法自动滚动底部的bug ([7e482f7](https://github.com/publishlab/node-acme-client/commit/7e482f798c0142bce1866f84676cb40210f9638a))
+
+## [1.29.5](https://github.com/publishlab/node-acme-client/compare/v1.29.4...v1.29.5) (2025-01-07)
+
+**Note:** Version bump only for package @certd/acme-client
+
+## [1.29.4](https://github.com/publishlab/node-acme-client/compare/v1.29.3...v1.29.4) (2025-01-06)
+
+**Note:** Version bump only for package @certd/acme-client
+
+## [1.29.3](https://github.com/publishlab/node-acme-client/compare/v1.29.2...v1.29.3) (2025-01-04)
+
+### Performance Improvements
+
+* 优化acme sdk ([54db744](https://github.com/publishlab/node-acme-client/commit/54db74428259de64d12230c2ab7353ae11197bbc))
+
+## [1.29.2](https://github.com/publishlab/node-acme-client/compare/v1.29.1...v1.29.2) (2024-12-25)
+
+**Note:** Version bump only for package @certd/acme-client
+
+## [1.29.1](https://github.com/publishlab/node-acme-client/compare/v1.29.0...v1.29.1) (2024-12-25)
+
+**Note:** Version bump only for package @certd/acme-client
+
 # [1.29.0](https://github.com/publishlab/node-acme-client/compare/v1.28.4...v1.29.0) (2024-12-24)
 
 **Note:** Version bump only for package @certd/acme-client

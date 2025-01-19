@@ -6,7 +6,7 @@ import path from 'path';
 
 @IsTaskPlugin({
   name: 'CopyToLocal',
-  title: '复制到本机',
+  title: '主机-复制到本机',
   icon: 'solar:copy-bold-duotone',
   desc: '【仅管理员使用】实际上是复制证书到docker容器内的某个路径，需要做目录映射到宿主机',
   group: pluginGroups.host.key,
@@ -226,7 +226,7 @@ export class CopyCertToLocalPlugin extends AbstractTaskPlugin {
         this.hostIcPath = icPath;
       }
       if (pfxPath) {
-        pfxPath = icPath.trim();
+        pfxPath = pfxPath.trim();
         pfxPath = pfxPath.startsWith('/') ? pfxPath : path.join(Constants.dataDir, pfxPath);
         this.copyFile(tmpPfxPath, pfxPath);
         this.hostPfxPath = pfxPath;

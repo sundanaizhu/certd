@@ -1,17 +1,18 @@
-import { Inject, Provide } from '@midwayjs/core';
-import { BaseService, NeedSuiteException, NeedVIPException, SysSettingsService, SysSuiteSetting } from '@certd/lib-server';
+import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
+import { BaseService, NeedSuiteException, NeedVIPException, SysSettingsService } from '@certd/lib-server';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
 import { SiteInfoEntity } from '../entity/site-info.js';
 import { siteTester } from './site-tester.js';
 import dayjs from 'dayjs';
-import { logger } from '@certd/basic';
+import { logger, utils } from '@certd/basic';
 import { PeerCertificate } from 'tls';
 import { NotificationService } from '../../pipeline/service/notification-service.js';
 import { isComm, isPlus } from '@certd/plus-core';
 import { UserSuiteService } from '@certd/commercial-core';
 
 @Provide()
+@Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class SiteInfoService extends BaseService<SiteInfoEntity> {
   @InjectEntityModel(SiteInfoEntity)
   repository: Repository<SiteInfoEntity>;
@@ -42,7 +43,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
       }
     }
     if (isComm()) {
-      const suiteSetting = await this.sysSettingsService.getSetting<SysSuiteSetting>(SysSuiteSetting);
+      const suiteSetting = await this.userSuiteService.getSuiteSetting();
       if (suiteSetting.enabled) {
         const userSuite = await this.userSuiteService.getMySuiteDetail(data.userId);
         if (userSuite.monitorCount.max != -1 && userSuite.monitorCount.max <= userSuite.monitorCount.used) {
@@ -76,23 +77,35 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
    * 检查站点证书过期时间
    * @param site
    * @param notify
+   * @param retryTimes
    */
-  async doCheck(site: SiteInfoEntity, notify = true) {
+  async doCheck(site: SiteInfoEntity, notify = true, retryTimes = 3) {
     if (!site?.domain) {
       throw new Error('站点域名不能为空');
     }
     try {
+      await this.update({
+        id: site.id,
+        checkStatus: 'checking',
+        lastCheckTime: dayjs,
+      });
       const res = await siteTester.test({
         host: site.domain,
         port: site.httpsPort,
+        retryTimes,
       });
 
       const certi: PeerCertificate = res.certificate;
       if (!certi) {
-        return;
+        throw new Error('没有发现证书');
       }
       const expires = certi.valid_to;
-      const domains = [certi.subject?.CN, ...certi.subjectaltname?.replaceAll('DNS:', '').split(',')];
+      const allDomains = certi.subjectaltname?.replaceAll('DNS:', '').split(',');
+      const mainDomain = certi.subject?.CN;
+      let domains = allDomains;
+      if (!allDomains.includes(mainDomain)) {
+        domains = [mainDomain, ...allDomains];
+      }
       const issuer = `${certi.issuer.O}<${certi.issuer.CN}>`;
       const isExpired = dayjs().valueOf() > dayjs(expires).valueOf();
       const status = isExpired ? 'expired' : 'ok';
@@ -139,13 +152,14 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
    * 检查，但不发邮件
    * @param id
    * @param notify
+   * @param retryTimes
    */
-  async check(id: number, notify = false) {
+  async check(id: number, notify = false, retryTimes = 3) {
     const site = await this.info(id);
     if (!site) {
       throw new Error('站点不存在');
     }
-    return await this.doCheck(site, notify);
+    return await this.doCheck(site, notify, retryTimes);
   }
 
   async sendCheckErrorNotify(site: SiteInfoEntity) {
@@ -206,15 +220,22 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
     }
   }
 
-  async checkAll(userId: any) {
+  async checkAllByUsers(userId: any) {
     if (!userId) {
       throw new Error('userId is required');
     }
     const sites = await this.repository.find({
       where: { userId },
     });
+    this.checkList(sites);
+  }
+
+  async checkList(sites: SiteInfoEntity[]) {
     for (const site of sites) {
-      await this.doCheck(site);
+      this.doCheck(site).catch(e => {
+        logger.error(`检查站点证书失败，${site.domain}`, e.message);
+      });
+      await utils.sleep(200);
     }
   }
 }

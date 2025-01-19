@@ -1,12 +1,12 @@
 import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { AbstractPlusTaskPlugin, TencentAccess } from '@certd/plugin-plus';
-import { TencentSslClient } from '../../lib/index.js';
+import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
 import dayjs from 'dayjs';
 import { remove } from 'lodash-es';
+import { TencentAccess, TencentSslClient } from '@certd/plugin-lib';
 
 @IsTaskPlugin({
   name: 'TencentDeleteExpiringCert',
-  title: '删除腾讯云即将过期证书',
+  title: '腾讯云-删除即将过期证书',
   icon: 'svg:icon-tencentcloud',
   group: pluginGroups.tencent.key,
   desc: '仅删除未使用的证书',
